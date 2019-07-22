@@ -1,25 +1,26 @@
-#ifndef __INVERTED_PENGUIN__TOKENS__TOKENSTREAM_HPP__
-#define __INVERTED_PENGUIN__TOKENS__TOKENSTREAM_HPP__
+#ifndef __INVERTED_PENGUIN__TERMS__TERMSTREAM_HPP__
+#define __INVERTED_PENGUIN__TERMS__TERMSTREAM_HPP__
 
-#include <inverted_penguin/tokens/TokenStream_.hpp>
-#include <inverted_penguin/tokens/ModifiedTokenStream_.hpp>
+#include <inverted_penguin/terms/TermStream_.hpp>
+#include <inverted_penguin/terms/ModifiedTermStream_.hpp>
 
 namespace inverted_penguin {
-  namespace tokens {
-    template <typename M> class TokenStreamModifier;
-    template <typename M1, typename M2> class TokenStreamModifierSequence;
+  namespace terms {
+
+    template <typename M> class TermStreamModifier;
+    template <typename M1, typename M2> class TermStreamModifierSequence;
 
     template <typename S, typename M>
-    ModifiedTokenStream<S, M> operator+(
-        const TokenStream<S>& tokenStream,
-	const TokenStreamModifier<M>& modifier
+    ModifiedTermStream<S, M> operator+(
+        const TermStream<S>& termStream,
+	const TermStreamModifier<M>& modifier
     ) {
-      return ModifiedTokenStream<S, M>(tokenStream.self(), modifier.self());
+      return ModifiedTermStream<S, M>(termStream.self(), modifier.self());
     }
 
     template <typename S, typename M1, typename M2>
-    auto operator+(const TokenStream<S>& stream,
-		   const TokenStreamModifierSequence<M1, M2>& modifier) {
+    auto operator+(const TermStream<S>& stream,
+		   const TermStreamModifierSequence<M1, M2>& modifier) {
       return (stream + modifier.firstModifier()) + modifier.secondModifier();
     }
 

@@ -1,120 +1,120 @@
-#include <inverted_penguin/tokens/TokenStream.hpp>
-#include <inverted_penguin/tokens/TokenStreamModifier.hpp>
+#include <inverted_penguin/terms/TermStream.hpp>
+#include <inverted_penguin/terms/TermStreamModifier.hpp>
 #include <gtest/gtest.h>
 
-using namespace inverted_penguin::tokens;
+using namespace inverted_penguin::terms;
 
 namespace {
-  class SimpleTokenStream : public TokenStream<SimpleTokenStream> {
+  class SimpleTermStream : public TermStream<SimpleTermStream> {
   public:
-    explicit SimpleTokenStream(const std::vector<Token>& tokens)
-        : tokens_(tokens), current_(tokens_.begin()) {
+    explicit SimpleTermStream(const std::vector<Term>& terms)
+        : terms_(terms), current_(terms_.begin()) {
     }
-    explicit SimpleTokenStream(const std::initializer_list<Token>& tokens)
-        : tokens_(tokens), current_(tokens_.begin()) {
+    explicit SimpleTermStream(const std::initializer_list<Term>& terms)
+        : terms_(terms), current_(terms_.begin()) {
     }
-    SimpleTokenStream(const SimpleTokenStream& other)
-        : tokens_(other.tokens_),
-	  current_(tokens_.begin() + (other.current_ - other.tokens_.begin())) {
+    SimpleTermStream(const SimpleTermStream& other)
+        : terms_(other.terms_),
+	  current_(terms_.begin() + (other.current_ - other.terms_.begin())) {
     }
 
-    Token next() {
-      if (current_ == tokens_.end()) {
-	return Token::empty();
+    Term next() {
+      if (current_ == terms_.end()) {
+	return Term::empty();
       } else {
 	return *current_++;
       }
     }
 
     bool reset() {
-      current_ = tokens_.begin();
+      current_ = terms_.begin();
       return true;
     }
 
-    SimpleTokenStream& operator=(const SimpleTokenStream& other) {
+    SimpleTermStream& operator=(const SimpleTermStream& other) {
       if (this != &other) {
-	tokens_ = other.tokens_;
-	current_ = tokens_.begin() + (other.current_ - other.tokens_.begin());
+	terms_ = other.terms_;
+	current_ = terms_.begin() + (other.current_ - other.terms_.begin());
       }
       return *this;
     }
   private:
-    std::vector<Token> tokens_;
-    std::vector<Token>::const_iterator current_;
+    std::vector<Term> terms_;
+    std::vector<Term>::const_iterator current_;
   };
 
-  class SuffixModifier : public TokenStreamModifier<SuffixModifier> {
+  class SuffixModifier : public TermStreamModifier<SuffixModifier> {
   public:
     template <typename S>
-    Token next(TokenStream<S>& stream) const {
+    Term next(TermStream<S>& stream) const {
       return this->apply(stream.self().next());
     }
 
-    Token apply(const Token& t) const {
-      return t.notEmpty() ? Token(t.text + ":foo", t.position) : t;
+    Term apply(const Term& t) const {
+      return t.notEmpty() ? Term(t.text + ":foo", t.position) : t;
     }
   };
 
-  class WrappingModifier : public TokenStreamModifier<WrappingModifier> {
+  class WrappingModifier : public TermStreamModifier<WrappingModifier> {
   public:
     template <typename S>
-    Token next(TokenStream<S>& stream) const {
+    Term next(TermStream<S>& stream) const {
       return this->apply(stream.self().next());
     }
 
-    Token apply(const Token& t) const {
+    Term apply(const Term& t) const {
       if (t.isEmpty()) {
 	return t;
       } else {
-	return Token("(" + t.text + ")", t.position);
+	return Term("(" + t.text + ")", t.position);
       }
     }
   };
 
-  inline std::ostream& operator<<(std::ostream& out, const Token& t) {
+  inline std::ostream& operator<<(std::ostream& out, const Term& t) {
     return out << "(\"" << t.text << ", " << t.position << ")";
   }
 
 }
 
-TEST(ModifiedTokenStreamTests, ModifyTokenStream) {
-  const std::vector<Token> TOKENS{
+TEST(ModifiedTermStreamTests, ModifyTermStream) {
+  const std::vector<Term> TERMS{
       { "Penguins", 0 }, { "are", 1 }, { "cute", 2 }
   };
-  const std::vector<Token> TRUTH{
+  const std::vector<Term> TRUTH{
       { "Penguins:foo", 0 }, { "are:foo", 1 }, { "cute:foo", 2 }
   };
-  SimpleTokenStream ts(TOKENS);
-  ModifiedTokenStream< SimpleTokenStream, SuffixModifier > modified =
+  SimpleTermStream ts(TERMS);
+  ModifiedTermStream< SimpleTermStream, SuffixModifier > modified =
       ts + SuffixModifier();
-  std::vector<Token> tokens;
-  Token t;
+  std::vector<Term> terms;
+  Term t;
 
   while ((t = modified.next()).notEmpty()) {
-    tokens.push_back(t);
+    terms.push_back(t);
   }
-  EXPECT_EQ(TRUTH, tokens);
+  EXPECT_EQ(TRUTH, terms);
 }
 
-TEST(ModifiedTokenStreamTests, MoreThanOneModifier) {
-  const std::vector<Token> TOKENS{
+TEST(ModifiedTermStreamTests, MoreThanOneModifier) {
+  const std::vector<Term> TERMS{
       { "Penguins", 0 }, { "are", 1 }, { "cute", 2 }
   };
-  const std::vector<Token> TRUTH{
+  const std::vector<Term> TRUTH{
       { "(Penguins:foo)", 0 }, { "(are:foo)", 1 }, { "(cute:foo)", 2 }
   };
-  SimpleTokenStream ts(TOKENS);
-  TokenStreamModifierSequence< SuffixModifier, WrappingModifier> modifiers =
+  SimpleTermStream ts(TERMS);
+  TermStreamModifierSequence< SuffixModifier, WrappingModifier> modifiers =
       SuffixModifier() + WrappingModifier();
-  ModifiedTokenStream< ModifiedTokenStream< SimpleTokenStream, SuffixModifier >,
+  ModifiedTermStream< ModifiedTermStream< SimpleTermStream, SuffixModifier >,
 		       WrappingModifier > final =
       ts + modifiers;
-  std::vector<Token> tokens;
-  Token t;
+  std::vector<Term> terms;
+  Term t;
   
   while ((t = final.next()).notEmpty()) {
-    tokens.push_back(t);
+    terms.push_back(t);
   }
-  EXPECT_EQ(TRUTH, tokens);
+  EXPECT_EQ(TRUTH, terms);
   
 }

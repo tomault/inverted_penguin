@@ -17,12 +17,12 @@ export REPO_LIB_DIR ?= ${REPO_DIR}/lib
 export REPO_BIN_DIR ?= ${REPO_DIR}/bin
 
 # Pistis modules the current module depends upon
-export PISTIS_DEPS =
+export PISTIS_DEPS = exceptions filesystem memory util
 
 # Headers and libraries needed for unit tests only
 export PISTIS_TEST_INC_DIRS =
 export PISTIS_TEST_LIB_DIRS =
-export PISTIS_TEST_LIBS = 
+export PISTIS_TEST_LIBS = -lpistis_testing
 
 # Third party dependencies
 export THIRD_PARTY_INC_DIRS = 

@@ -1,25 +1,25 @@
-#ifndef __INVERTED_PENGUIN__TOKENS__NUMBERFILTER_HPP__
-#define __INVERTED_PENGUIN__TOKENS__NUMBERFILTER_HPP__
+#ifndef __INVERTED_PENGUIN__TERMS__NUMBERFILTER_HPP__
+#define __INVERTED_PENGUIN__TERMS__NUMBERFILTER_HPP__
 
-#include <inverted_penguin/tokens/TokenStreamModifier.hpp>
-#include <inverted_penguin/tokens/UnicodeUtils.hpp>
+#include <inverted_penguin/terms/TermStreamModifier.hpp>
+#include <inverted_penguin/terms/UnicodeUtils.hpp>
 
 namespace inverted_penguin {
-  namespace tokens {
+  namespace terms {
 
     class NumberFilter {
     public:
       template <typename S>
-      Token next(TokenStream<S>& stream) const {
-	Token t = stream.self().next();
+      Term next(TermStream<S>& stream) const {
+	Term t = stream.self().next();
 	while (t.notEmpty() && isAllDigits_(t.text)) {
 	  t = stream.self().next();
 	}
 	return t;
       }
 
-      Token apply(Token t) const {
-	return isAllDigits_(t.text) ? Token::empty() : t;
+      Term apply(Term t) const {
+	return isAllDigits_(t.text) ? Term::empty() : t;
       }
 
     private:

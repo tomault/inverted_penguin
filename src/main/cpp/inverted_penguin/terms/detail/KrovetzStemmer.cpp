@@ -42,7 +42,7 @@
 #include <cstring>
 #include <iostream>
 
-using namespace inverted_penguin::tokens::detail;
+using namespace inverted_penguin::terms::detail;
 
 /* These macros expand to expressions which evaluate to the following: */
 

@@ -1,12 +1,12 @@
-#ifndef __INVERTED_PENGUIN__TOKENS__UTF8DECODEERROR_HPP__
-#define __INVERTED_PENGUIN__TOKENS__UTF8DECODEERROR_HPP__
+#ifndef __INVERTED_PENGUIN__EXCEPTIONS__UTF8DECODEERROR_HPP__
+#define __INVERTED_PENGUIN__EXCEPTIONS__UTF8DECODEERROR_HPP__
 
-#include <inverted_penguin/InvertedPenguinException.hpp>
+#include <inverted_penguin/exceptions/InvertedPenguinException.hpp>
 #include <vector>
-#include <stddef.h>
+#include <stdint.h>
 
 namespace inverted_penguin {
-  namespace tokens {
+  namespace exceptions {
 
     class Utf8DecodeError : public InvertedPenguinException {
     public:

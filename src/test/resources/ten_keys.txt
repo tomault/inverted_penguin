@@ -1,0 +1,10 @@
+apple	10
+big	20
+bigger	30
+biggest	40
+cow	50
+crisp	60
+dog	70
+penguin	80
+storm	90
+thorn	100

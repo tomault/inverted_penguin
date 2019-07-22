@@ -1,8 +1,8 @@
-#include <inverted_penguin/tokens/LowerCaseMapper.hpp>
-#include <inverted_penguin/tokens/IteratorRangeTokenStream.hpp>
+#include <inverted_penguin/terms/LowerCaseMapper.hpp>
+#include <inverted_penguin/terms/IteratorRangeTermStream.hpp>
 #include <gtest/gtest.h>
 
-using namespace inverted_penguin::tokens;
+using namespace inverted_penguin::terms;
 
 namespace {
 
@@ -11,25 +11,25 @@ namespace {
 TEST(LowerCaseMapperTests, Apply) {
   LowerCaseMapper mapper;
 
-  EXPECT_EQ(Token("abc", 5), mapper.apply(Token("ABC", 5)));
-  EXPECT_EQ(Token("def", 2), mapper.apply(Token("def", 2)));
-  EXPECT_EQ(Token("penguin", 3), mapper.apply(Token("Penguin", 3)));
+  EXPECT_EQ(Term("abc", 5), mapper.apply(Term("ABC", 5)));
+  EXPECT_EQ(Term("def", 2), mapper.apply(Term("def", 2)));
+  EXPECT_EQ(Term("penguin", 3), mapper.apply(Term("Penguin", 3)));
 }
 
 TEST(LowerCaseMapperTests, Next) {
-  std::vector<std::string> TOKENS{
+  std::vector<std::string> TERMS{
       "Mark", "was", "questioned", "by", "the", "FBI"
   };
-  std::vector<Token> TRUTH{
+  std::vector<Term> TRUTH{
     { "mark", 0 }, { "was", 1 }, { "questioned", 2 }, { "by", 3 },
     { "the", 4 }, { "fbi", 5 }
   };
-  IteratorRangeTokenStream< std::vector<std::string>::const_iterator > stream(
-      TOKENS.begin(), TOKENS.end()
+  IteratorRangeTermStream< std::vector<std::string>::const_iterator > stream(
+      TERMS.begin(), TERMS.end()
   );
   LowerCaseMapper mapper;
-  std::vector<Token> result;
-  Token t;
+  std::vector<Term> result;
+  Term t;
 
   while ((t = mapper.next(stream)).notEmpty()) {
     result.push_back(t);

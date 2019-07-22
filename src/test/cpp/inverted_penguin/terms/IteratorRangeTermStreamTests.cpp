@@ -1,76 +1,76 @@
-#include <inverted_penguin/tokens/IteratorRangeTokenStream.hpp>
+#include <inverted_penguin/terms/IteratorRangeTermStream.hpp>
 #include <gtest/gtest.h>
 
 #include <ostream>
 #include <string>
 #include <vector>
 
-using namespace inverted_penguin::tokens;
+using namespace inverted_penguin::terms;
 
 namespace inverted_penguin {
-  namespace tokens {
+  namespace terms {
 
-    inline std::ostream& operator<<(std::ostream& out, const Token& t) {
+    inline std::ostream& operator<<(std::ostream& out, const Term& t) {
       return out << "(\"" << t.text << ", " << t.position << ")";
     }
 
   }
 }
 
-TEST(IteratorRangeTokenStreamTests, IterateOverRange) {
+TEST(IteratorRangeTermStreamTests, IterateOverRange) {
   const std::vector<std::string> WORDS{ "Penguins", "are", "cute" };
-  const std::vector<Token> TRUTH{
+  const std::vector<Term> TRUTH{
     { "Penguins", 0 }, { "are", 1 }, { "cute", 2 }
   };
-  std::vector<Token> tokens;
-  IteratorRangeTokenStream< std::vector<std::string>::const_iterator > stream(
+  std::vector<Term> terms;
+  IteratorRangeTermStream< std::vector<std::string>::const_iterator > stream(
       WORDS.begin(), WORDS.end()
   );
-  Token t;
+  Term t;
 
   while ((t = stream.next()).notEmpty()) {
-    tokens.push_back(t);
+    terms.push_back(t);
   }
-  EXPECT_EQ(TRUTH, tokens);
+  EXPECT_EQ(TRUTH, terms);
 }
 
-TEST(IteratorRangeTokenStreamTests, IterateOverEmptyRange) {
+TEST(IteratorRangeTermStreamTests, IterateOverEmptyRange) {
   const std::vector<std::string> WORDS{ };
-  const std::vector<Token> TRUTH{ };
-  std::vector<Token> tokens;
-  IteratorRangeTokenStream< std::vector<std::string>::const_iterator > stream(
+  const std::vector<Term> TRUTH{ };
+  std::vector<Term> terms;
+  IteratorRangeTermStream< std::vector<std::string>::const_iterator > stream(
       WORDS.begin(), WORDS.end()
   );
-  Token t;
+  Term t;
 
   while ((t = stream.next()).notEmpty()) {
-    tokens.push_back(t);
+    terms.push_back(t);
   }
-  EXPECT_EQ(TRUTH, tokens);
+  EXPECT_EQ(TRUTH, terms);
 }
 
-TEST(IteratorRangeTokenStreamTests, Reset) {
+TEST(IteratorRangeTermStreamTests, Reset) {
   const std::vector<std::string> WORDS{ "Penguins", "are", "cute" };
-  const std::vector<Token> TRUTH{
+  const std::vector<Term> TRUTH{
     { "Penguins", 0 }, { "are", 1 }, { "cute", 2 }
   };
-  std::vector<Token> tokens;
-  IteratorRangeTokenStream< std::vector<std::string>::const_iterator > stream(
+  std::vector<Term> terms;
+  IteratorRangeTermStream< std::vector<std::string>::const_iterator > stream(
       WORDS.begin(), WORDS.end()
   );
-  Token t;
+  Term t;
 
   while ((t = stream.next()).notEmpty()) {
-    tokens.push_back(t);
+    terms.push_back(t);
   }
-  EXPECT_EQ(TRUTH, tokens);
+  EXPECT_EQ(TRUTH, terms);
 
   EXPECT_TRUE(stream.next().isEmpty());
 
-  tokens.clear();
+  terms.clear();
   stream.reset();
   while ((t = stream.next()).notEmpty()) {
-    tokens.push_back(t);
+    terms.push_back(t);
   }
-  EXPECT_EQ(TRUTH, tokens);  
+  EXPECT_EQ(TRUTH, terms);  
 }

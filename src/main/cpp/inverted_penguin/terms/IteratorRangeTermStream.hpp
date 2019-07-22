@@ -1,28 +1,28 @@
-#ifndef __INVERTED_PENGUIN__TOKENS__ITERATORRANGETOKENSTREAM_HPP__
-#define __INVERTED_PENGUIN__TOKENS__ITERATORRANGETOKENSTREAM_HPP__
+#ifndef __INVERTED_PENGUIN__TERMS__ITERATORRANGETERMSTREAM_HPP__
+#define __INVERTED_PENGUIN__TERMS__ITERATORRANGETERMSTREAM_HPP__
 
-#include <inverted_penguin/tokens/TokenStream.hpp>
+#include <inverted_penguin/terms/TermStream.hpp>
 
 namespace inverted_penguin {
-  namespace tokens {
+  namespace terms {
 
-    /** @brief TokenStream whose content is a sequence of strings defined
+    /** @brief TermStream whose content is a sequence of strings defined
      *         by a pair of iterators.
      */
     template <typename Iterator>
-    class IteratorRangeTokenStream
-        : public TokenStream< IteratorRangeTokenStream<Iterator> > {
+    class IteratorRangeTermStream
+        : public TermStream< IteratorRangeTermStream<Iterator> > {
     public:
-      IteratorRangeTokenStream(const Iterator& start, const Iterator& end):
+      IteratorRangeTermStream(const Iterator& start, const Iterator& end):
 	  start_(start), end_(end), current_(start), position_(0) {
 	// Intentionally left blank 
       }
 
-      Token next() {
+      Term next() {
 	if (current_ == end_) {
-	  return Token::empty();
+	  return Term::empty();
 	} else {
-	  Token t(*current_, position_);
+	  Term t(*current_, position_);
 	  ++current_;
 	  ++position_;
 	  return std::move(t);

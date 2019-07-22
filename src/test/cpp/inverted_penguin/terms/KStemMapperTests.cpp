@@ -1,16 +1,16 @@
-#include <inverted_penguin/tokens/KStemMapper.hpp>
+#include <inverted_penguin/terms/KStemMapper.hpp>
 #include <gtest/gtest.h>
 
-#include <inverted_penguin/tokens/IteratorRangeTokenStream.hpp>
+#include <inverted_penguin/terms/IteratorRangeTermStream.hpp>
 
 #include <iostream>
 
-using namespace inverted_penguin::tokens;
+using namespace inverted_penguin::terms;
 
 namespace inverted_penguin {
-  namespace tokens {
+  namespace terms {
 
-    inline std::ostream& operator<<(std::ostream& out, const Token& t) {
+    inline std::ostream& operator<<(std::ostream& out, const Term& t) {
       return out << "(\"" << t.text << ", " << t.position << ")";
     }
 
@@ -23,26 +23,26 @@ TEST(KStemMapper, Apply) {
   );
   KStemMapper mapper;
 
-  EXPECT_EQ(Token("a", 5), mapper.apply(Token("a", 5)));
-  EXPECT_EQ(Token(LONG_WORD, 2), mapper.apply(Token(LONG_WORD, 2)));
-  EXPECT_EQ(Token("penguin", 3), mapper.apply(Token("penguin", 3)));
-  EXPECT_EQ(Token("walk", 4), mapper.apply(Token("walks", 4)));
+  EXPECT_EQ(Term("a", 5), mapper.apply(Term("a", 5)));
+  EXPECT_EQ(Term(LONG_WORD, 2), mapper.apply(Term(LONG_WORD, 2)));
+  EXPECT_EQ(Term("penguin", 3), mapper.apply(Term("penguin", 3)));
+  EXPECT_EQ(Term("walk", 4), mapper.apply(Term("walks", 4)));
 }
 
 TEST(KStemMapper, Next) {
-  std::vector<std::string> TOKENS{
+  std::vector<std::string> TERMS{
       "mark", "was", "questioned", "by", "the", "fbi"
   };
-  std::vector<Token> TRUTH{
+  std::vector<Term> TRUTH{
     { "mark", 0 }, { "was", 1 }, { "question", 2 }, { "by", 3 },
     { "the", 4 }, { "fbi", 5 }
   };
-  IteratorRangeTokenStream< std::vector<std::string>::const_iterator > stream(
-      TOKENS.begin(), TOKENS.end()
+  IteratorRangeTermStream< std::vector<std::string>::const_iterator > stream(
+      TERMS.begin(), TERMS.end()
   );
   KStemMapper mapper;
-  std::vector<Token> result;
-  Token t;
+  std::vector<Term> result;
+  Term t;
 
   while ((t = mapper.next(stream)).notEmpty()) {
     result.push_back(t);

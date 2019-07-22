@@ -1,0 +1,8 @@
+#ifndef __INVERTED_PENGUIN__CORE__DICTIONARY__DETAIL__VALUEDICTIONARYITERATORS_HPP__
+#define __INVERTED_PENGUIN__CORE__DICTIONARY__DETAIL__VALUEDICTIONARYITERATORS_HPP__
+
+#include <inverted_penguin/core/dictionary/detail/ValueDictionaryConstIterator.hpp>
+#include <inverted_penguin/core/dictionary/detail/ValueDictionaryKeyIterator.hpp>
+#include <inverted_penguin/core/dictionary/detail/ValueDictionaryValueIterator.hpp>
+
+#endif

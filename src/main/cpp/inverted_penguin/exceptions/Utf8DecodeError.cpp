@@ -2,7 +2,7 @@
 #include <iomanip>
 #include <sstream>
 
-using namespace inverted_penguin::tokens;
+using namespace inverted_penguin::exceptions;
 
 Utf8DecodeError::Utf8DecodeError(const std::string& details)
     : InvertedPenguinException(details) {

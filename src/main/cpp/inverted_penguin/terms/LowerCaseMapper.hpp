@@ -1,22 +1,22 @@
-#ifndef __INVERTED_PENGUIN__TOKENS__LOWERCASEMAPPER_HPP__
-#define __INVERTED_PENGUIN__TOKENS__LOWERCASEMAPPER_HPP__
+#ifndef __INVERTED_PENGUIN__TERMS__LOWERCASEMAPPER_HPP__
+#define __INVERTED_PENGUIN__TERMS__LOWERCASEMAPPER_HPP__
 
-#include <inverted_penguin/tokens/TokenStreamModifier.hpp>
-#include <inverted_penguin/tokens/UnicodeUtils.hpp>
+#include <inverted_penguin/terms/TermStreamModifier.hpp>
+#include <inverted_penguin/terms/UnicodeUtils.hpp>
 #include <iterator>
 #include <vector>
 
 namespace inverted_penguin {
-  namespace tokens {
+  namespace terms {
 
-    class LowerCaseMapper : public TokenStreamModifier<LowerCaseMapper> {
+    class LowerCaseMapper : public TermStreamModifier<LowerCaseMapper> {
     public:
       template <typename S>
-      Token next(TokenStream<S>& stream) const {
+      Term next(TermStream<S>& stream) const {
 	return this->apply(stream.self().next());
       }
 
-      Token apply(const Token& t) const {
+      Term apply(const Term& t) const {
 	if (t.isEmpty()) {
 	  return t;
 	} else {
@@ -26,8 +26,8 @@ namespace inverted_penguin {
 	  transformUtf8Sequence(t.text.begin(), t.text.end(),
 				std::back_inserter(lowered),
 				[](uint32_t c) { return toLowerCase(c); });
-	  return Token(std::string(lowered.begin(), lowered.end()),
-		       t.position);
+	  return Term(std::string(lowered.begin(), lowered.end()),
+		      t.position);
 	}
       }
     };

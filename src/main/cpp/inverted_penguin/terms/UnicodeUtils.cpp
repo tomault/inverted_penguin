@@ -1,12 +1,8 @@
 #include "UnicodeUtils.hpp"
 
-using namespace inverted_penguin::tokens;
+using namespace inverted_penguin::terms;
 
-namespace {
-
-}
-
-uint32_t inverted_penguin::tokens::toLowerCase(uint32_t c) {
+uint32_t inverted_penguin::terms::toLowerCase(uint32_t c) {
   // This covers LATIN-1
   // TODO: Extend to handle all of unicode
   if (((c >= 'A') && (c <= 'Z')) || ((c >= 0xC0) && (c <= 0xD6)) ||

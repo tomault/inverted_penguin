@@ -33,15 +33,15 @@
 // C++ thread safe implementation of the Krovetz stemmer.
 // requires no external data files.
 // 07/29/2005
-#ifndef __INVERTED_PENGUIN__TOKENS__DETAIL__KROVETZSTEMMER_HPP__
-#define __INVERTED_PENGUIN__TOKENS__DETAIL__KROVETZSTEMMER_HPP__
+#ifndef __INVERTED_PENGUIN__TERMS__DETAIL__KROVETZSTEMMER_HPP__
+#define __INVERTED_PENGUIN__TERMS__DETAIL__KROVETZSTEMMER_HPP__
 
 #include <iostream>
 #include <cstring>
 #include <unordered_map>
 
 namespace inverted_penguin {
-  namespace tokens {
+  namespace terms {
     namespace detail {
       
       class KrovetzStemmer {

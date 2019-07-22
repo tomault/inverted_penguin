@@ -1,4 +1,4 @@
-#include <inverted_penguin/tokens/detail/KrovetzStemmer.hpp>
+#include <inverted_penguin/terms/detail/KrovetzStemmer.hpp>
 #include <gtest/gtest.h>
 
 #include "OriginalKrovetzStemmer.hpp"
@@ -16,7 +16,7 @@
 #include <stdlib.h>
 
 #include <iostream>
-using namespace inverted_penguin::tokens::detail;
+using namespace inverted_penguin::terms::detail;
 
 namespace {
   std::string computeResourcesDir() {

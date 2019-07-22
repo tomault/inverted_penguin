@@ -1,8 +1,8 @@
-#ifndef __INVERTED_PENGUIN__TOKENS__UNICODEUTILS_HPP__
-#define __INVERTED_PENGUIN__TOKENS__UNICODEUTILS_HPP__
+#ifndef __INVERTED_PENGUIN__TERMS__UNICODEUTILS_HPP__
+#define __INVERTED_PENGUIN__TERMS__UNICODEUTILS_HPP__
 
-#include <inverted_penguin/tokens/Utf8DecodeError.hpp>
-#include <inverted_penguin/tokens/Utf8EncodeError.hpp>
+#include <inverted_penguin/exceptions/Utf8DecodeError.hpp>
+#include <inverted_penguin/exceptions/Utf8EncodeError.hpp>
 
 #include <exception>
 #include <iterator>
@@ -10,7 +10,7 @@
 #include <stddef.h>
 
 namespace inverted_penguin {
-  namespace tokens {
+  namespace terms {
     namespace detail {
       
       template <typename Iterator>
@@ -22,11 +22,11 @@ namespace inverted_penguin {
 	while (n) {
 	  ++p;
 	  if (p == end) {
-	    throw Utf8DecodeError::prematureEndOfSequence(start, p);
+	    throw exceptions::Utf8DecodeError::prematureEndOfSequence(start, p);
 	  } else {
 	    uint32_t b = *p;
 	    if ((b < 0x80) || (b > 0xBF)) {
-	      throw Utf8DecodeError::illegalTrailingByte(start, p);
+	      throw exceptions::Utf8DecodeError::illegalTrailingByte(start, p);
 	    }
 	    c = (c << 6) | (b & 0x3F);
 	    --n;
@@ -40,14 +40,14 @@ namespace inverted_penguin {
     std::tuple<uint32_t, Iterator> decodeUtf8(const Iterator& start,
 					      const Iterator& end) {
       if (start == end) {
-	throw Utf8DecodeError::emptySequence();
+	throw exceptions::Utf8DecodeError::emptySequence();
       } else {
 	uint32_t c = *start;
 	if (c < 0x80) {
 	  Iterator next(start);
 	  return std::tuple<uint32_t, Iterator>(c, ++next);
 	} else if (c < 0xC0) {
-	  throw Utf8DecodeError::illegalStartByte(c);
+	  throw exceptions::Utf8DecodeError::illegalStartByte(c);
 	} else if (c < 0xE0) {
 	  return detail::decodeTrailingUtf8(start, end, c & 0x1F, 1);
 	} else if (c < 0xF0) {
@@ -59,7 +59,7 @@ namespace inverted_penguin {
 	} else if (c < 0xFE) {
 	  return detail::decodeTrailingUtf8(start, end, c & 0x01, 5);
 	} else {
-	  throw Utf8DecodeError::illegalStartByte(c);
+	  throw exceptions::Utf8DecodeError::illegalStartByte(c);
 	}
       }
     }
@@ -94,7 +94,7 @@ namespace inverted_penguin {
 	*p = 0x80 | ((c >>  6) & 0x3F); ++p;
 	*p = 0x80 | (c & 0x3F); ++p;
       } else {
-	throw Utf8EncodeError::codepointTooLarge(c);
+	throw exceptions::Utf8EncodeError::codepointTooLarge(c);
       }
       return p;
     }

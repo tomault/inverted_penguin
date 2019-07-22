@@ -1,11 +1,11 @@
-#ifndef __INVERTED_PENGUIN__TOKENS__TOKENSTREAMMODIFIER__HPP__
-#define __INVERTED_PENGUIN__TOKENS__TOKENSTREAMMODIFIER__HPP__
+#ifndef __INVERTED_PENGUIN__TERMS__TERMSTREAMMODIFIER__HPP__
+#define __INVERTED_PENGUIN__TERMS__TERMSTREAMMODIFIER__HPP__
 
 namespace inverted_penguin {
-  namespace tokens {
+  namespace terms {
 
     template <typename DerivedModifier>
-    class TokenStreamModifier {
+    class TermStreamModifier {
     public:
       typedef DerivedModifier DerivedModifierType;
 

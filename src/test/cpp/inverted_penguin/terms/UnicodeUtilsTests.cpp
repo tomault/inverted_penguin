@@ -1,11 +1,12 @@
 /** @file Unit tests for unicode utilities */
-#include <inverted_penguin/tokens/UnicodeUtils.hpp>
+#include <inverted_penguin/terms/UnicodeUtils.hpp>
 #include <gtest/gtest.h>
 #include <iomanip>
 #include <sstream>
 #include <vector>
 
-using namespace inverted_penguin::tokens;
+using namespace inverted_penguin::exceptions;
+using namespace inverted_penguin::terms;
 
 TEST(UnicodeUtilsTests, DecodeUtf8) {
   const unsigned char TEXT[] = { 0x41,
