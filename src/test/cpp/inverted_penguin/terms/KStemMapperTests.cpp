@@ -7,16 +7,6 @@
 
 using namespace inverted_penguin::terms;
 
-namespace inverted_penguin {
-  namespace terms {
-
-    inline std::ostream& operator<<(std::ostream& out, const Term& t) {
-      return out << "(\"" << t.text << ", " << t.position << ")";
-    }
-
-  }
-}
-
 TEST(KStemMapper, Apply) {
   const std::string LONG_WORD(
       "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"

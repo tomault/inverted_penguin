@@ -71,10 +71,6 @@ namespace {
     }
   };
 
-  inline std::ostream& operator<<(std::ostream& out, const Term& t) {
-    return out << "(\"" << t.text << ", " << t.position << ")";
-  }
-
 }
 
 TEST(ModifiedTermStreamTests, ModifyTermStream) {

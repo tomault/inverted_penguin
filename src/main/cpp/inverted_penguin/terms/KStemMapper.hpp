@@ -1,6 +1,8 @@
 #ifndef __INVERTED_PENGUIN__TERMS__KSTEMMAPPER_HPP__
 #define __INVERTED_PENGUIN__TERMS__KSTEMMAPPER_HPP__
 
+#include <inverted_penguin/terms/DynamicTermStream.hpp>
+#include <inverted_penguin/terms/DynamicTermStreamModifierWrapper.hpp>
 #include <inverted_penguin/terms/TermStream.hpp>
 #include <inverted_penguin/terms/TermStreamModifier.hpp>
 #include <inverted_penguin/terms/detail/KrovetzStemmer.hpp>
@@ -12,6 +14,8 @@ namespace inverted_penguin {
 
     class KStemMapper : public TermStreamModifier<KStemMapper> {
     public:
+      static constexpr bool isStateful() { return false; }
+      
       template <typename S>
       Term next(TermStream<S>& stream) const {
 	return this->apply(stream.self().next());
@@ -28,10 +32,13 @@ namespace inverted_penguin {
 	}
       }
 
+      bool reset() { return true; }
+      
     private:
       detail::KrovetzStemmer kStemmer_;
     };
 
+    typedef DynamicTermStreamModifierWrapper<KStemMapper> DynamicKStemMapper;
   }
 }
 #endif

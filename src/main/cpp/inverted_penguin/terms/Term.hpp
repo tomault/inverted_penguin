@@ -1,6 +1,7 @@
 #ifndef __INVERTED_PENGUIN__TERMS__TERM_HPP__
 #define __INVERTED_PENGUIN__TERMS__TERM_HPP__
 
+#include <ostream>
 #include <string>
 #include <stddef.h>
 
@@ -31,13 +32,18 @@ namespace inverted_penguin {
 	return (position != other.position) || (text != other.text);
       }
 
+      operator bool() const { return notEmpty(); }
+
       static Term empty() {
 	static const Term ZERO("", 0);
 	return ZERO;
       }
 
     };
-    
+
+    inline std::ostream& operator<<(std::ostream& out, const Term& t) {
+      return out << "["  << t.text << "]:" << t.position;
+    }
   }
 }
 

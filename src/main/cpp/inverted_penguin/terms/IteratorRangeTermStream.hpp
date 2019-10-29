@@ -1,6 +1,7 @@
 #ifndef __INVERTED_PENGUIN__TERMS__ITERATORRANGETERMSTREAM_HPP__
 #define __INVERTED_PENGUIN__TERMS__ITERATORRANGETERMSTREAM_HPP__
 
+#include <inverted_penguin/terms/DynamicTermStreamWrapper.hpp>
 #include <inverted_penguin/terms/TermStream.hpp>
 
 namespace inverted_penguin {
@@ -10,8 +11,8 @@ namespace inverted_penguin {
      *         by a pair of iterators.
      */
     template <typename Iterator>
-    class IteratorRangeTermStream
-        : public TermStream< IteratorRangeTermStream<Iterator> > {
+    class IteratorRangeTermStream:
+        public TermStream< IteratorRangeTermStream<Iterator> > {
     public:
       IteratorRangeTermStream(const Iterator& start, const Iterator& end):
 	  start_(start), end_(end), current_(start), position_(0) {
@@ -41,9 +42,11 @@ namespace inverted_penguin {
       Iterator current_;
       uint32_t position_;
     };
-    
+
+    template <typename Iterator>
+    using DynamicIteratorRangeTermStream =
+        DynamicTermStreamWrapper< IteratorRangeTermStream<Iterator> >;
   }
 }
 
 #endif
-

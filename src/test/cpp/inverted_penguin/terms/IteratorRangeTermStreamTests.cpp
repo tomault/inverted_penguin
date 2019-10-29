@@ -7,16 +7,6 @@
 
 using namespace inverted_penguin::terms;
 
-namespace inverted_penguin {
-  namespace terms {
-
-    inline std::ostream& operator<<(std::ostream& out, const Term& t) {
-      return out << "(\"" << t.text << ", " << t.position << ")";
-    }
-
-  }
-}
-
 TEST(IteratorRangeTermStreamTests, IterateOverRange) {
   const std::vector<std::string> WORDS{ "Penguins", "are", "cute" };
   const std::vector<Term> TRUTH{

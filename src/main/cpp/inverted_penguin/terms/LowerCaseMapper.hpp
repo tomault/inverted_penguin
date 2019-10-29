@@ -1,6 +1,7 @@
 #ifndef __INVERTED_PENGUIN__TERMS__LOWERCASEMAPPER_HPP__
 #define __INVERTED_PENGUIN__TERMS__LOWERCASEMAPPER_HPP__
 
+#include <inverted_penguin/terms/DynamicTermStreamModifierWrapper.hpp>
 #include <inverted_penguin/terms/TermStreamModifier.hpp>
 #include <inverted_penguin/terms/UnicodeUtils.hpp>
 #include <iterator>
@@ -11,6 +12,8 @@ namespace inverted_penguin {
 
     class LowerCaseMapper : public TermStreamModifier<LowerCaseMapper> {
     public:
+      static constexpr bool isStateful() { return false; }
+      
       template <typename S>
       Term next(TermStream<S>& stream) const {
 	return this->apply(stream.self().next());
@@ -30,8 +33,12 @@ namespace inverted_penguin {
 		      t.position);
 	}
       }
+
+      bool reset() { return true; }
     };
-    
+
+    typedef DynamicTermStreamModifierWrapper<LowerCaseMapper>
+            DynamicLowerCaseMapper;
   }
 }
 

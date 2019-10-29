@@ -41,6 +41,10 @@ namespace inverted_penguin {
       const TermStreamModifierSequence& self() const { *this; }
       TermStreamModifierSequence& self() { return *this; }
 
+      static constexpr bool isStateful() {
+	return FirstModifier::isStateful() || SecondModifier::isStateful();
+      }
+
       template <typename S>
       Term next(TermStream<S>& stream) const {
 	Term t = stream.self().next();
